@@ -82,8 +82,12 @@ public class ReverseLogic extends HttpServlet {
             r.setProd_cant(Integer.parseInt(req.getParameter("Prod_Cant"))); 
         }
         if(req.getParameter("Prod_PrecioUni")!=null){
-         
+        
             r.setProd_preciouni(Integer.parseInt(req.getParameter("Prod_PrecioUni"))); 
+
+        }if(req.getParameter("Mate_Id")!=null){
+        
+            r.setMate_id(Integer.parseInt(req.getParameter("Mate_Id"))); 
         }
         else{
             System.out.println("Error Al Registrar Datos");
@@ -111,6 +115,9 @@ public class ReverseLogic extends HttpServlet {
         if(req.getParameter("Prod_PrecioUni")!=null){
          
             r.setProd_preciouni(Integer.parseInt(req.getParameter("Prod_PrecioUni"))); 
+        }if(req.getParameter("Mate_Id")!=null){
+        
+            r.setMate_id(Integer.parseInt(req.getParameter("Mate_Id"))); 
         }
         
         try {

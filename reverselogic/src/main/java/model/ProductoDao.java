@@ -14,7 +14,7 @@ public class ProductoDao {
 
 
     //!ADVERTENCIA:  En las clases Dao podremos realizar diferentes ejecucuines como lo hacemos en phpMyAdmin o WorkBench.
-    //SECCION:  Atrubutos para realizar acciones en la base de datos.   e
+    //?  Atrubutos para realizar acciones en la base de datos.   e
     Connection con; //objeto de conexión
     PreparedStatement ps; //preparar sentencias
     ResultSet rs; // almacenar consutas
@@ -25,7 +25,7 @@ public class ProductoDao {
     //? Registrar usuario.
     public int registrar(ProductoVo Producto) throws SQLException{
 
-        sql="INSERT INTO producto (Prod_Nombre, Prod_Cant, Prod_PrecioUni) values (?,?,?)";
+        sql="INSERT INTO producto (Prod_Nombre, Prod_Cant, Prod_PrecioUni, Mate_Id) values (?,?,?,?)";
         System.out.println(sql);
 
         try{
@@ -34,6 +34,7 @@ public class ProductoDao {
             ps.setString(1, Producto.getProd_nombre());
             ps.setInt(2, Producto.getProd_cant());
             ps.setInt(3, Producto.getProd_preciouni());
+            ps.setInt(4, Producto.getMate_id());
             System.out.println(ps);
             ps.executeUpdate(); //Ejecutar sentencia.
             ps.close(); //cerrar sentencia.
@@ -65,6 +66,7 @@ public class ProductoDao {
                 r.setProd_nombre(rs.getString("Prod_Nombre"));
                 r.setProd_cant(rs.getInt("Prod_Cant"));
                 r.setProd_preciouni(rs.getInt("Prod_PrecioUni"));
+                r.setMate_id(rs.getInt("Mate_Id"));
                 producto.add(r);
             }
             ps.close();
@@ -82,7 +84,7 @@ public class ProductoDao {
     //? Actualizar usuario.
     public int actualizar(ProductoVo Producto) throws SQLException{
 
-        sql="update producto set Prod_Nombre = ?, Prod_Cant = ?, Prod_PrecioUni = ? where Prod_Id = ? "; 
+        sql="update producto set Prod_Nombre = ?, Prod_Cant = ?, Prod_PrecioUni = ?, Mate_Id=? where Prod_Id = ? "; 
         System.out.println(sql);
 
         try{
@@ -92,6 +94,7 @@ public class ProductoDao {
             ps.setInt(2, Producto.getProd_cant());
             ps.setInt(3, Producto.getProd_preciouni());
             ps.setInt(4,    Producto.getProd_id());
+            ps.setInt(5, Producto.getMate_id());
 
             System.out.println(ps);
             ps.executeUpdate(); //Ejecutar sentencia.
@@ -112,7 +115,7 @@ public class ProductoDao {
 
 
     public ProductoVo obtenerUsuarioPorId(int Prod_Id) throws SQLException {
-        sql = "SELECT * FROM producto WHERE user_id = ?";
+        sql = "SELECT * FROM producto WHERE Prod_id = ?";
         ProductoVo producto = null;
         try(Connection con = Conexion.conectar();
             PreparedStatement ps = con.prepareStatement(sql)) {
@@ -126,9 +129,10 @@ public class ProductoDao {
                     producto.setProd_nombre(rs.getString("Prod_Nombre"));
                     producto.setProd_cant(rs.getInt("Prod_Cant"));
                     producto.setProd_preciouni(rs.getInt("Prod_PrecioUni"));
+                    producto.setMate_id(rs.getInt("Mate_Id"));
                 }
             } catch (SQLException e) {
-                System.out.println("Error al obtener el usuario: " + e.getMessage());
+                System.out.println("Error al obtener el Producto:" + e.getMessage());
             }
             return producto;
         }

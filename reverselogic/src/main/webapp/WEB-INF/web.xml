@@ -8,23 +8,26 @@
        <welcome-file>index.jsp</welcome-file>  
    </welcome-file-list> 
   
- <!--Aqui reconocemos el servlet que seria el controlador principal--> 
-   <!--CLASE EN JAVA--> 
-   <servlet> 
-     <servlet-name>ReverseLogic</servlet-name> 
-     <servlet-class>ReverseLogic</servlet-class> 
-   </servlet> 
+  <!-- Definición del servlet ReverseLogic -->
+  <servlet> 
+    <servlet-name>ReverseLogic</servlet-name> 
+    <servlet-class>ReverseLogic</servlet-class> <!-- Reemplaza con la ruta correcta -->
+  </servlet> 
   
-   <!--HEAD DE LA PAGINA WEB-->   
-   <servlet-mapping> 
-     <servlet-name>ReverseLogic</servlet-name> 
-     <url-pattern>/ReverseLogic</url-pattern> 
-   </servlet-mapping> 
+  <servlet-mapping> 
+    <servlet-name>ReverseLogic</servlet-name> 
+    <url-pattern>/ReverseLogic</url-pattern>  
+  </servlet-mapping> 
+
+  <!-- Definición del servlet Empleado -->
+  <servlet> 
+    <servlet-name>Empleado</servlet-name> 
+    <servlet-class>Empleado</servlet-class> <!-- Reemplaza con la ruta correcta -->
+  </servlet> 
   
-   <!--CONTROLADOR--> 
-   <!--CLASE EN JAVA--> 
-   <servlet> 
-   <servlet-name>controller.Usuario</servlet-name> 
-   <servlet-class>controller.Usuario</servlet-class> 
- </servlet> 
+  <servlet-mapping> 
+    <servlet-name>Empleado</servlet-name> 
+    <url-pattern>/Empleado</url-pattern>  
+  </servlet-mapping> 
+
 </web-app>

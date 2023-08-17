@@ -1,5 +1,10 @@
+model\Cliente\ClienteDao.class
+ReverseLogic.class
+model\Empleado\EmpleadoVo.class
+model\Empleado\EmpleadoDao.class
+model\Producto\ProductoDao.class
 controller\Usuario.class
 model\Conexion.class
-model\ProductoDao.class
-model\ProductoVo.class
-ReverseLogic.class
+model\Cliente\ClienteVo.class
+Empleado.class
+model\Producto\ProductoVo.class

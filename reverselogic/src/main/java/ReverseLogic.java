@@ -9,9 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
-import model.ProductoDao;
-import model.ProductoVo;
+import model.Producto.ProductoDao;
+import model.Producto.ProductoVo;
 
 public class ReverseLogic extends HttpServlet {
     ProductoVo r=new ProductoVo(); 
@@ -30,8 +29,8 @@ public class ReverseLogic extends HttpServlet {
             System.out.println("Se Ha Redireccionado Al Index");
             break;
 }
-            case "register":
-            req.getRequestDispatcher("register.jsp").forward(req, resp);
+            case "registerProd":
+            req.getRequestDispatcher("registerProd.jsp").forward(req, resp);
             System.out.println("Se Ha Redireccionado Al Register");
             break;
 
@@ -40,8 +39,8 @@ public class ReverseLogic extends HttpServlet {
             System.out.println("Se Ha Redireccionado Al Update");
             break;
 
-            case "consultar":
-            req.getRequestDispatcher("consultar.jsp").forward(req, resp);
+            case "ConsultarProd":
+            req.getRequestDispatcher("ConsultarProd.jsp").forward(req, resp);
             System.out.println("Se Ha Redireccionado Al Consult");
             break;
 
@@ -53,12 +52,12 @@ public class ReverseLogic extends HttpServlet {
         System.out.println("Entró al DoPost");
         String enviar=req.getParameter("enviar");
         switch(enviar){
-            case "register":
+            case "registerProd":
                 System.out.println("Acabas de entrar al caso 'add'");
                 add(req,resp);
             break;
 
-            case "update": 
+            case "updateProd": 
                 System.out.println("Acabas de entrar al caso 'update'");
                 actualizar(req, resp);
             break;
@@ -66,6 +65,12 @@ public class ReverseLogic extends HttpServlet {
             case "listar":
             System.out.println("Acabas de entrar al caso 'listar'");
             listar(req, resp);
+            break;
+
+            case "eliminarProd":
+            System.out.println("Has Accedido Al Caso Delete");
+            delete(req, resp);
+
             break;
         }
     }
@@ -97,7 +102,7 @@ public class ReverseLogic extends HttpServlet {
             System.out.println("Registro insertado correctamente");
 
             //? Redireccionamiento preventivo.       
-            req.getRequestDispatcher("register.jsp").forward(req, resp);
+            req.getRequestDispatcher("registerProd.jsp").forward(req, resp);
 
         } catch (Exception e) {
             System.out.println("Error en la inserción del registro "+e.getMessage().toString());
@@ -105,6 +110,10 @@ public class ReverseLogic extends HttpServlet {
     }
     //? UPDATE - ACTUALIZAR
     private void actualizar(HttpServletRequest req, HttpServletResponse resp) {
+
+        if(req.getParameter("Prod_id")!=null){
+            r.setProd_id( Integer.parseInt(req.getParameter("Prod_id"))); 
+        }
 
         if(req.getParameter("Prod_Nombre")!=null){
             r.setProd_nombre( req.getParameter("Prod_Nombre")); 
@@ -125,7 +134,7 @@ public class ReverseLogic extends HttpServlet {
             System.out.println("Registro actualizado correctamente");
 
             //? Redireccionamiento preventivo.       
-            req.getRequestDispatcher("update.jsp").forward(req, resp);
+            req.getRequestDispatcher("ConsultarProd.jsp").forward(req, resp);
 
         } catch (Exception e) {
             System.out.println("Error en la actualizacion del registro "+e.getMessage().toString());
@@ -136,12 +145,39 @@ public class ReverseLogic extends HttpServlet {
 
         private void listar(HttpServletRequest req, HttpServletResponse resp) {
     try {
-        List<ProductoVo> usuario = rd.listar();
-        req.setAttribute("usuarios", usuario);
-        req.getRequestDispatcher("consulta.jsp").forward(req, resp);
+        List<ProductoVo> producto = rd.listar();
+        req.setAttribute("productos", producto);
+        req.getRequestDispatcher("ConsultarProd.jsp").forward(req, resp);
         System.out.println("Datos listados correctamente");
     } catch (Exception e) {
         System.out.println("Hay problemas al listar los datos " + e.getMessage().toString());
     }
     }
+
+    private void delete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        System.out.println("Has ingresado a la función eliminar");
+    
+        String ProdIdStrDelete = req.getParameter("Prod_id");
+    
+        try {
+            int ProdIdToDelete = Integer.parseInt(ProdIdStrDelete);
+            System.out.println("ID Del Producto A Eliminar: " + ProdIdToDelete);
+    
+            new ProductoDao().eliminar(ProdIdToDelete);
+            System.out.println("Producto eliminado correctamente");
+    
+            // Redireccionamiento preventivo.
+            // Redirige nuevamente a la página de listado de usuarios después de eliminar
+            resp.sendRedirect("ConsultarProd.jsp");
+        } catch (NumberFormatException e) {
+            // Si ocurre un error al convertir el ID a entero
+            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID De Producto inválido");
+        } catch (SQLException e) {
+            // Si ocurre un error al eliminar el usuario en la base de datos
+            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al eliminar el Producto");
+        }
+    }
 }
+
